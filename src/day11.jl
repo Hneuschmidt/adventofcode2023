@@ -1,20 +1,7 @@
-
 module day11mod
 FILENAME = "src/inputs/day11.txt"
 export day11
 import ..tools: file_to_string, emptyfilter, intparse_all
-using Debugger
-
-testinp = "...#......
-.......#..
-#.........
-..........
-......#...
-.#........
-.........#
-..........
-.......#..
-#...#....."
 
 struct Map
     data::String
@@ -29,6 +16,11 @@ end
 # TODO move to tools
 function rc(map::Map, idx)
     (r, c) = divrem(idx, map.n_cols)
+    if c == 0
+        # TODO There should be a nicer solution to this...
+        c = map.n_cols
+        r-=1
+    end
     (r+1, c)
 end
 
@@ -47,7 +39,6 @@ end
 function add_galaxies!(m::Map)
     for (i, c) in enumerate(m.data)
         if c == '#'
-            @bp
             push!(m.galaxies, rc(m, i))
         end
     end
@@ -82,16 +73,15 @@ function crosses(indices, s, e)
     acc
 end
 
-function shortest_paths(m)
+function shortest_paths(m; factor=1)
     distances = Vector{Int}()
     for i in eachindex(m.galaxies)
         for j in (i+1):length(m.galaxies)
             (r1, c1) = m.galaxies[i]
             (r2, c2) = m.galaxies[j]
             dist =  abs(r2 - r1) + abs(c2 - c1)
-            dist += crosses(m.empty_rows, r1, r2)
-            dist += crosses(m.empty_cols, c1, c2)
-            @bp
+            dist += factor * crosses(m.empty_rows, r1, r2)
+            dist += factor * crosses(m.empty_cols, c1, c2)
             push!(distances, dist)
         end
     end
@@ -106,21 +96,18 @@ end
 
 function part1(inp)
     m = Map(inp)
-    println("rows: ", m.n_rows, ", cols: ", m.n_cols)
     add_galaxies!(m)
     add_empty_rows_and_cols!(m)
     distances = shortest_paths(m)
-#     println("Galaxies: ", m.galaxies)
-#     println("empty_rows: ", m.empty_rows)
-#     println("empty_cols: ", m.empty_cols)
-#     println("Distances: ", distances)
-#     println("length(Distances): ", length(distances))
-    # TODO why this hack?
     sum(distances)
 end
 
-function part2(inp)
-    
+function part2(inp; factor=999999)
+    m = Map(inp)
+    add_galaxies!(m)
+    add_empty_rows_and_cols!(m)
+    distances = shortest_paths(m, factor=factor)
+    sum(distances)
 end
 
 end #module
