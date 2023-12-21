@@ -44,8 +44,6 @@ end
 function is_vertical_mirror(m::MirrorPattern, col)
     left, right = col, col+1
     dist = min((left - 1), (m.n_columns - right))
-    # in case two rows next to the left or right are tested
-    # "edge cases" haha :)
     !any(m.mmap[:, left-dist:left] .⊻ m.mmap[:, right+dist:-1:right])
 end
 
