@@ -3,7 +3,6 @@ FILENAME = "src/inputs/day12.txt"
 export day12
 import ..tools: file_to_string, emptyfilter, intparse_all
 
-
 function day12()
     input = file_to_string(FILENAME)
     println(part1(input))
