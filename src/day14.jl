@@ -3,6 +3,7 @@ FILENAME = "src/inputs/day14.txt"
 export day14
 import ..tools: file_to_string, emptyfilter, intparse_all
 using Match
+using LinearAlgebra
 
 
 function day14()
@@ -87,6 +88,7 @@ function rotate_one_billion_times(pat)
     cycle_length = rotate_pattern_until_same(pat)
     one_billion = Int(1e9)
     largest_multiple = ((one_billion - start_rotations - cycle_length) ÷ cycle_length) * cycle_length
+    println("cycle length")
     for _ in 1:(one_billion - start_rotations - largest_multiple - cycle_length)
         one_rotation(pat)
     end
@@ -101,12 +103,12 @@ function rotate_pattern_until_same(pat::Matrix{UInt8})
     i = 1
     while true
         one_rotation(pat)
-        hash = pat
-        is_visited = get(visited, hash, -1)
+        hashed = pat
+        is_visited = get(visited, hashed, -1)
         if is_visited != -1
             return i
         else
-            visited[hash] = i
+            visited[hashed] = i
         end
         i += 1
     end
