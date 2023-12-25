@@ -64,6 +64,7 @@ function part2(inp)
     for (i, start) in enumerate(starts)
         steps = 0
         current = start
+        # TODO use Iterators.cycle instead
         for inst in flatten(repeated(instructions))
             current = take_branch(inst, branches[current])
             steps += 1
@@ -88,6 +89,7 @@ function part1(inp)
     current = [b for b in keys(branches) if endswith(b, "A")]
     println("start: ", current)
     steps = 0
+    # TODO use Iterators.cylce instead
     for inst in flatten(repeated(instructions))
         next = take_branch.(inst, [branches[k] for k in current])
         steps += 1
