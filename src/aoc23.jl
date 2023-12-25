@@ -18,6 +18,7 @@ include("day11.jl")
 include("day12.jl")
 include("day13.jl")
 include("day14.jl")
+include("day15.jl")
 
 
 using .day01mod
@@ -34,9 +35,10 @@ using .day11mod
 using .day12mod
 using .day13mod
 using .day14mod
+using .day15mod
 
 export day1, day2, day3, day4, day5, day6, day7, day8, day9, day10, day11
-export day12, day13, day14
+export day12, day13, day14, day15
 
 
 end # module aoc23
